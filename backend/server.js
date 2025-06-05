@@ -4,11 +4,13 @@ const dotenv = require("dotenv")
 const authRoutes = require("./routes/authRoutes")
 const userRoutes = require("./routes/userRoutes")
 const settingRoutes = require("./routes/settingRoutes")
+const cookieParser = require("cookie-parser")
 
 dotenv.config()
 
 const app = express()
 app.use(express.json())
+app.use(cookieParser())
 
 // DB Connection
 mongoose.connect(process.env.MONGO_URI)
