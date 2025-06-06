@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema(
   {
     telegramId: { type: String, required: true, unique: true },
     username: { type: String },
+    city: { type: String },
     isBlocked: { type: Boolean, default: false },
     isSubscribed: { type: Boolean, default: true },
   },
@@ -12,5 +13,4 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-
-module.exports=mongoose.model("User",userSchema)
+module.exports = mongoose.model("User", userSchema);
