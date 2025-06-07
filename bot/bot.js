@@ -2,6 +2,7 @@ require("dotenv").config();
 const TelegramBot = require("node-telegram-bot-api");
 const axios = require("axios");
 const express = require("express");
+const checkBlocked = require("./utils/checkBlocked");
 
 const bot = new TelegramBot(process.env.BOT_TOKEN, {
   polling: true,
@@ -34,7 +35,7 @@ bot.onText(/\/subscribe/, (msg) => {
   );
 });
 
-// unsubscribe commannd 
+// unsubscribe commannd
 bot.onText(/\/unsubscribe/, (msg) => {
   const chatId = msg.chat.id;
   subscriptions.delete(chatId);
@@ -47,15 +48,25 @@ bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const city = msg.text;
 
-  if(/\/(start|subscribe|unsubscribe)/i.test(city))return
+  if (/\/(start|subscribe|unsubscribe)/i.test(city)) return;
+
+  // check if user is blocked
+  const telegramId = String(msg.from.id);
+  const isBlocked = await checkBlocked(telegramId);
+
+  // Check if user is blocked
+
+  if (isBlocked) {
+    bot.sendMessage(chatId, "🚫 You are blocked from using the bot.");
+    return;
+  }
+
+  // Proceed if not blocked
 
   // Proceed only if text seems like a city (basic filter)
-
-
-  if (!/^[a-zA-Z\s]{3,}$/.test(city)){
-    bot.sendMessage(chatId,"❗ Please enter a valid city name.")
-
-  } 
+  if (!/^[a-zA-Z\s]{3,}$/.test(city)) {
+    bot.sendMessage(chatId, "❗ Please enter a valid city name.");
+  }
 
   try {
     //Step1: Fetch weather
@@ -65,18 +76,19 @@ bot.on("message", async (msg) => {
     const data = weatherRes.data;
     const weatherInfo = `
     *Weather in ${data.name},${data.sys.country}*
-    Temperature: ${data.main.temp}°C
-    Condition: ${data.weather[0].description}
-    Humidity: ${data.main.humidity}%
-    Wind: ${data.wind.speed} m/s
+    🌡️ Temperature: ${data.main.temp}°C
+    🌥️ Condition: ${data.weather[0].description}
+    💧 Humidity: ${data.main.humidity}%
+    🌬️ Wind: ${data.wind.speed} m/s
 
     `;
     bot.sendMessage(chatId, weatherInfo, { parse_mode: "Markdown" });
 
-    // Step2: Subscribe user to backend
+    const username = msg.from.username || msg.from.first_name;
+
     await axios.post(`${process.env.BACKEND_URL}/api/users/subscribe`, {
-      telegramId: String(msg.from.id),
-      username: msg.from.username || msg.from.first_name,
+      telegramId,
+      username,
       city: data.name,
     });
   } catch (error) {
@@ -84,7 +96,7 @@ bot.on("message", async (msg) => {
 
     bot.sendMessage(
       chatId,
-      `Unable to fetch weather for "${city}" please ensure the city name is correct`
+      `⚠️ Unable to fetch weather for "${city}" please ensure the city name is correct`
     );
   }
 });

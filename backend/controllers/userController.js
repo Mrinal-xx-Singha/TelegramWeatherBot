@@ -5,7 +5,7 @@ const User = require("../models/User");
 
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.find().sort({ createdAt: -1 });
+    const users = await User.find({}).sort({ createdAt: -1 });
     res.status(200).json(users);
   } catch (error) {
     console.error("[UserController.getUsers]", error.message);
@@ -42,13 +42,13 @@ exports.unblockUser = async (req, res) => {
 
 //* @desc Delete a user
 //* @route DELETE /api/users/:id
-exports.deletUser = async (req, res) => {
+exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const user = await User.findById(id)
-    if(!user){
-      return res.status(401).json({message:`User with Id ${id} not found.`})
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(401).json({ message: `User with Id ${id} not found.` });
     }
 
     await User.findByIdAndDelete(id);
@@ -58,6 +58,25 @@ exports.deletUser = async (req, res) => {
     res.status(500).json({ message: "Failed to delete user" });
   }
 };
+exports.checkBlocked = async (req, res) => {
+  const { telegramId } = req.body;
+  if (!telegramId)
+    return res.status(400).json({ message: "telegramId required" });
+
+  try {
+    const user = await User.findOne({ telegramId });
+    
+    if (!user)
+      return res
+        .status(404)
+        .json({ message: "User not found", isBlocked: false });
+    return res.status(200).json({ isBlocked: user.isBlocked });
+  } catch (error) {
+    console.error("[checkBlocked]", error.message);
+    return res.status(500).json({ message: "Server error", isBlocked: true });
+  }
+};
+
 
 //* @desc  Called by bot to register or update a user
 //* @route POST /api/users/subscribe
@@ -70,7 +89,6 @@ exports.subscribeUser = async (req, res) => {
     }
     let user = await User.findOne({ telegramId });
 
-  
     if (!user) {
       user = new User({
         telegramId,
@@ -89,3 +107,4 @@ exports.subscribeUser = async (req, res) => {
     res.status(500).json({ message: "Failed to subscribe user" });
   }
 };
+

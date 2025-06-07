@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
       .cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
+        sameSite: "Lax",
         maxAge: 24 * 60 * 60 * 1000, //1 day
       })
       .json({ message: "Login successful" });
@@ -59,6 +59,19 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.check =(req,res) =>{
+  const token = req.cookies.token
+  if(!token) return res.status(401).json({message:"Unauthorized"})
+
+    try {
+      const decoded = jwt.verify(token,process.env.JWT_SECRET)
+      return res.status(200).json({adminId:decoded.id})
+    } catch (error) {
+      return res.status(401).json({message:"Invalid Token"})
+    }
+}
+
 
 //* @desc Admin Logout
 //* route POST /api/auth/logout

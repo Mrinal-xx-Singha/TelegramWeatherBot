@@ -5,12 +5,16 @@ const authRoutes = require("./routes/authRoutes")
 const userRoutes = require("./routes/userRoutes")
 const settingRoutes = require("./routes/settingRoutes")
 const cookieParser = require("cookie-parser")
-
+const cors = require("cors")
 dotenv.config()
 
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
+app.use(cors({
+    origin:'http://localhost:5173',
+    credentials:true
+}))
 
 // DB Connection
 mongoose.connect(process.env.MONGO_URI)
