@@ -60,7 +60,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.check =(req,res) =>{
+exports.checkSelf =(req,res) =>{
   const token = req.cookies.token
   if(!token) return res.status(401).json({message:"Unauthorized"})
 

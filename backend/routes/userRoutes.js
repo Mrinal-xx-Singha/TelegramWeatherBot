@@ -8,9 +8,10 @@ const {
   subscribeUser,
   checkBlocked,
 } = require("../controllers/userController");
-const { check } = require("../controllers/authController");
+
 
 const router = express.Router();
+
 router.get("/", verifyToken, getUsers);
 router.post("/block/:id", verifyToken, blockUser);
 router.post("/unblock/:id", verifyToken, unblockUser);

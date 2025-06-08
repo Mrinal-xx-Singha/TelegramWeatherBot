@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      await axiosInstance.get("/auth/check");
+      await axiosInstance.get("/auth/checkSelf");
       setAuthenticated(true);
     } catch  {
       setAuthenticated(false);
