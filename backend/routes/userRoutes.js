@@ -10,12 +10,10 @@ const {
 } = require("../controllers/userController");
 
 const router = express.Router();
-router.post("/check",checkBlocked)
 router.get("/", verifyToken, getUsers);
 router.post("/block/:id", verifyToken, blockUser);
 router.post("/unblock/:id", verifyToken, unblockUser);
 router.delete("/:id", verifyToken, deleteUser);
 
-// Telegram Bot route
-router.post("/subscribe", subscribeUser);
+
 module.exports = router;
