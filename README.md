@@ -232,8 +232,8 @@ npm run dev
 - `POST /api/auth/logout` - Admin logout
 
 ### Bot
-- `POST /api/bot/subscribe
-- `PSOT /api/bot/check
+- `POST /api/bot/subscribe`
+- `POST /api/bot/check`
 
 ### User Management
 - `GET /api/users` - Get all users (admin only)
