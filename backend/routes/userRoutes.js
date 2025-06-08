@@ -10,7 +10,6 @@ const {
 } = require("../controllers/userController");
 
 const router = express.Router();
-router.post("/subscribe",subscribeUser)
 router.post("/check",checkBlocked)
 router.get("/", verifyToken, getUsers);
 router.post("/block/:id", verifyToken, blockUser);
