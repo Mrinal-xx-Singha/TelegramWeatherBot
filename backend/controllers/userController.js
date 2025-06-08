@@ -59,7 +59,7 @@ exports.deleteUser = async (req, res) => {
   }
 };
 //* @desc Checks if the user is blocked or not 
-//* @route POST /api/users/check
+//* @route POST /api/users/checkBlocked
 exports.checkBlocked = async (req, res) => {
   const { telegramId } = req.body;
   if (!telegramId)

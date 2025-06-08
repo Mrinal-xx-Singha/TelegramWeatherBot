@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
-const botRoutes = require("./routes/botRoutes")
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
@@ -29,7 +28,6 @@ mongoose
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/bot",botRoutes)
 
 const PORT = process.env.PORT || 5000;
 
