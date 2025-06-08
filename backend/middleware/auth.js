@@ -2,6 +2,13 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 exports.verifyToken = (req, res, next) => {
+
+  // Allowing cron jobs via secret header
+  const cronSecret = req.headers['x-cron-secret']
+
+  if(cronSecret && cronSecret === process.env.CRON_SECRET){
+    return next()
+  }
   const token = req.cookies.token;
   if (!token) return res.status(403).json({ message: "Not authenticated" });
 

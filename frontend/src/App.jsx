@@ -8,7 +8,6 @@ import {
 import Login from "./components/Login";
 import {  useAuth } from "./context/AuthContext";
 import Dashboard from "./components/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const { authenticated } = useAuth();

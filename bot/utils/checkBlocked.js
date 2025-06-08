@@ -1,12 +1,12 @@
 const axios = require("axios");
-
+// Check if the user is blocked or not 
 const checkBlocked = async (telegramId) => {
   try {
     const res = await axios.post(`${process.env.BACKEND_URL}/api/users/check`, {
       telegramId,
     });
 
-    return res.data?.isBlocked ?? false;
+    return res.data?.isBlocked 
   } catch (error) {
     console.error("[checkBlocked]", error.message);
     return false;

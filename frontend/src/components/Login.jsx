@@ -4,8 +4,8 @@ import { useAuth } from "../context/AuthContext";
 
 import { useNavigate } from "react-router-dom";
 const Login = () => {
-  const [email, setEmail] = useState("tester12@email.com");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -23,40 +23,47 @@ const Login = () => {
     }
   };
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-200">
-      <h1 className="text-2xl font-semibold text-center mb-6  uppercase tracking-wider">
-       StratoScope Bot
-      </h1>
-      <form
-        className="bg-white p-8 rounded shadow-md w-96"
-        onSubmit={handleSubmit}
-      >
-        <h2 className="text-2xl font-semibold text-center mb-6 uppercase tracking-wider">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-violet-200 px-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-2xl p-8 sm:p-10">
+        <h1 className="text-3xl sm:text-4xl font-bold text-center text-slate-800 tracking-wide mb-8 uppercase">
+          StratoScope Bot
+        </h1>
+        <h2 className="text-xl font-medium text-center text-gray-600 mb-6">
           Admin Login
         </h2>
-        <input
-          className="w-full p-2 mb-4 border border-gray-300 rounded"
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          className="w-full p-2 mb-4 border border-gray-300 rounded"
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-        <button
-          className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded"
-          type="submit"
-        >
-          Login
-        </button>
-      </form>
-      <p className="text-right text-lg font-semibold text-amber-500 pt-4">
-        Made By @Mrinal Singha
-      </p>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          {/* Admin Login email */}
+          <label className="text-sm font-semibold">
+            Email:tester12@email.com
+          </label>
+          <input
+            className="w-full p-3 mb-4 border border-gray-300 rounded-md"
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {/* Admin login password */}
+          <label className="text-sm font-semibold">Password:123456</label>
+          <input
+            type="password"
+            className="w-full p-2 mb-4 border border-gray-300 rounded"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          <button
+            className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-md font-semibold text-lg tracking-wide transition duration-300"
+            type="submit"
+          >
+            Login
+          </button>
+        </form>
+
+        <p className="text-center text-sm font-semibold text-gray-500 mt-6">
+          Made By{" "}
+          <span className="font-semibold text-red-400">@Mrinal Singha</span>
+        </p>
+      </div>
     </div>
   );
 };
