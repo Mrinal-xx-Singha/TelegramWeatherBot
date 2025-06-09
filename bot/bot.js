@@ -92,7 +92,7 @@ bot.on("message", async (msg) => {
     const username = msg.from.username || msg.from.first_name;
 
     // Save/update user subscription
-    await axios.post(`${process.env.BACKEND_URL}/api/bot/subscribe`, {
+    await axios.post(`${process.env.BACKEND_URL}/api/users/subscribe`, {
       telegramId,
       username,
       city: data.name,
@@ -117,8 +117,6 @@ bot.on("message", async (msg) => {
 });
 
 // Cron job - Every minute for testing
-//* 8:00 AM Daily 
-
 cron.schedule("0 8 * * *", async () => {
   console.log("✅ Cron job started at:", new Date().toLocaleString());
   console.log("Running weather update job...");
